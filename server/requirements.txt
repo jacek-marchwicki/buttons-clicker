@@ -1,0 +1,10 @@
+# This requirements file lists all third-party dependencies for this project.
+#
+# Run 'pip install -r requirements.txt -t lib/' to install these dependencies
+# in `lib/` subdirectory.
+#
+# Note: The `lib` directory is added to `sys.path` by `appengine_config.py`.
+Flask==0.10
+#requests==2.8.1
+requests==2.3.0
+git+https://github.com/mumino/python-firebase.git@master

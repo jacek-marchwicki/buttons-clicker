@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Buttons{% endblock %}
+{% block content %}
+<script language="JavaScript">
+    var ref = new Firebase('https://amber-heat-6428.firebaseio.com/');
+    var clicks = ref.child("clicks");
+</script>
+    <table class="table table-striped">
+    <thead>
+    <tr><td>#</td><td>Button</td><td>clicks</td></tr>
+    </thead>
+    <tbody>
+    {% for click in clicks %}
+    <tr>
+        <script language="JavaScript">
+            clicks.child("{{click.button}}").on("value", function(snapshot) {
+                var value = snapshot.val();
+                if (value == null) {
+                    return;
+                }
+                document.getElementById('count{{ click.button}}').innerHTML = value.clicks.toString()
+            });
+        </script>
+        <td>{{ loop.revindex }}</td>
+        <td>{{ click.button }}</td>
+        <td id="count{{ click.button }}">{{ click.count }}</td>
+    </tr>
+    {% endfor %}
+
+    </tbody>
+</table>
+{% endblock %}
+
