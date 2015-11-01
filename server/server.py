@@ -14,8 +14,13 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
-    clicks = buttons.Clicks.query().fetch()
-    return render_template('index.html', clicks=clicks)
+    button1 = buttons.Clicks.get_by_button(1).count
+    button2 = buttons.Clicks.get_by_button(2).count
+    button3 = buttons.Clicks.get_by_button(3).count
+    return render_template('index.html',
+                           button1=button1,
+                           button2=button2,
+                           button3=button3)
 
 
 @app.route('/api/clicks', methods=['POST'])

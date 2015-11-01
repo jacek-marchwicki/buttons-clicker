@@ -2,43 +2,73 @@
 
 {% block title %}Buttons{% endblock %}
 {% block content %}
-<audio id="sound" src="static/sound.mp3"></audio>
-<script language="JavaScript">
-    var ref = new Firebase('https://amber-heat-6428.firebaseio.com/');
-    var clicks = ref.child("clicks");
-</script>
-    <table class="table table-striped">
-    <thead>
-    <tr><td>#</td><td>Button</td><td>clicks</td></tr>
-    </thead>
-    <tbody>
-    {% for click in clicks %}
-    <tr>
-        <script language="JavaScript">
-            clicks.child("{{click.button}}").on("value", function(snapshot) {
-                var value = snapshot.val();
-                if (value == null) {
-                    return;
-                }
-                var element = document.getElementById('count{{ click.button}}');
-                var oldValue = element.innerHTML;
-                var newValue = value.clicks.toString();
-                if (oldValue != newValue) {
-                    element.innerHTML = newValue;
-                    document.getElementById('sound').play();
-                    $element = $('#count{{ click.button}}');
-                    $element.removeClass("spinEffect");
-                    setTimeout(function(){$element.addClass("spinEffect")},0);
-                }
-            });
-        </script>
-        <td>{{ loop.revindex }}</td>
-        <td>{{ click.button }}</td>
-        <td><span id="count{{ click.button }}">{{ click.count }}</span></td>
-    </tr>
-    {% endfor %}
+    <audio id="sound" src="static/sound.mp3"></audio>
+    <div>
+        <ul>
+            <li><strong>Donout: </strong><span id="count1">{{button1}}</span></li>
+            <li><strong>Coffe: </strong><span id="count2">{{button2}}</span></li>
+            <li><strong>Energy Drink: </strong><span id="count3">{{button3}}</span></li>
+        </ul>
+    </div>
 
-    </tbody>
-</table>
+    <canvas id="myChart" width="400" height="400"></canvas>
+    <script>
+        var ref = new Firebase('https://amber-heat-6428.firebaseio.com/');
+        var clicks = ref.child("clicks");
+        var ctx = document.getElementById("myChart").getContext("2d");
+
+        var data = [
+            {
+                value: {{button1}},
+                color:"#F7464A",
+                highlight: "#FF5A5E",
+                label: "Donout"
+            },
+            {
+                value: {{button2}},
+                color: "#46BFBD",
+                highlight: "#5AD3D1",
+                label: "Coffe"
+            },
+            {
+                value: {{button3}},
+                color: "#FDB45C",
+                highlight: "#FFC870",
+                label: "Energy Drink"
+            }
+        ];
+        var options = {};
+        var myPieChart = new Chart(ctx).Pie(data,options);
+
+        clicks.on("value", function(snapshot) {
+            var value = snapshot.val();
+            if (value == null) {
+                return;
+            }
+            button1 = value[1] ? value[1].clicks : 0;
+            button2 = value[2] ? value[2].clicks : 0;
+            button3 = value[3] ? value[3].clicks : 0;
+            myPieChart.segments[0].value = button1;
+            myPieChart.segments[1].value = button2;
+            myPieChart.segments[2].value = button3;
+            myPieChart.update();
+            setup(1, button1);
+            setup(2, button2);
+            setup(3, button3);
+        });
+
+        function setup(button, value) {
+            var element = document.getElementById('count' + button);
+            var oldValue = element.innerHTML;
+            var newValue = value.toString();
+            if (oldValue != newValue) {
+                element.innerHTML = newValue;
+                document.getElementById('sound').play();
+                $element = $('#count' + button);
+                $element.removeClass("spinEffect");
+                setTimeout(function(){$element.addClass("spinEffect")},0);
+            }
+        }
+    </script>
 {% endblock %}
 
