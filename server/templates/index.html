@@ -2,6 +2,7 @@
 
 {% block title %}Buttons{% endblock %}
 {% block content %}
+<audio id="sound" src="static/sound.mp3"></audio>
 <script language="JavaScript">
     var ref = new Firebase('https://amber-heat-6428.firebaseio.com/');
     var clicks = ref.child("clicks");
@@ -19,7 +20,13 @@
                 if (value == null) {
                     return;
                 }
-                document.getElementById('count{{ click.button}}').innerHTML = value.clicks.toString()
+                var element = document.getElementById('count{{ click.button}}');
+                var oldValue = element.innerHTML;
+                var newValue = value.clicks.toString();
+                if (oldValue != newValue) {
+                    element.innerHTML = newValue;
+                    document.getElementById('sound').play();
+                }
             });
         </script>
         <td>{{ loop.revindex }}</td>
