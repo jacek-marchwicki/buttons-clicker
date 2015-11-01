@@ -26,12 +26,15 @@
                 if (oldValue != newValue) {
                     element.innerHTML = newValue;
                     document.getElementById('sound').play();
+                    $element = $('#count{{ click.button}}');
+                    $element.removeClass("spinEffect");
+                    setTimeout(function(){$element.addClass("spinEffect")},0);
                 }
             });
         </script>
         <td>{{ loop.revindex }}</td>
         <td>{{ click.button }}</td>
-        <td id="count{{ click.button }}">{{ click.count }}</td>
+        <td><span id="count{{ click.button }}">{{ click.count }}</span></td>
     </tr>
     {% endfor %}
 

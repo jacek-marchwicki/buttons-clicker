@@ -8,6 +8,22 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="https://cdn.firebase.com/js/client/2.3.1/firebase.js"></script>
+    <style>
+        @keyframes roll {
+            0% {
+                transform: rotate(0deg) scale(1);
+            }
+            50% {
+                transform: rotate(180deg) scale(3);
+            }
+            100% {
+                transform: rotate(360deg) scale(1);
+            }
+        }
+        .spinEffect {
+            animation: roll 0.5s 1 linear;
+        }
+    </style>
 </head>
 
 <body id="page-top" class="index">
